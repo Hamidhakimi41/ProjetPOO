@@ -43,4 +43,13 @@ public abstract class Case extends Obj {
         e.setCase(this);}
 
 
+	public abstract boolean getActive();
+
+
+	protected abstract void setActive();
+
+
+	protected  void setType(Case vide) {};
+
+
    }

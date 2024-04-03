@@ -14,5 +14,11 @@ public class Heros extends Entite
         super(_jeu, c);
     }
 
+	@Override
+	protected boolean finDePartie(Jeu jeu) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

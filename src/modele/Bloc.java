@@ -11,4 +11,10 @@ public class Bloc extends Entite {
         return jeu.deplacerEntite(this, d);
     }
 
+	@Override
+	protected boolean finDePartie(Jeu jeu) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

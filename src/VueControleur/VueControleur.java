@@ -1,6 +1,8 @@
 package VueControleur;
 
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,6 +18,7 @@ import javax.swing.*;
 
 
 import modele.*;
+import monProjet.Main;
 
 
 /** Cette classe a deux fonctions :
@@ -28,6 +31,8 @@ public class VueControleur extends JFrame implements Observer {
 
     private int sizeX; // taille de la grille affichée
     private int sizeY;
+    private Main mn;
+    //private int niveausuivant=0;
 
     // icones affichées dans la grille
     private ImageIcon icoHero;
@@ -35,15 +40,23 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoMur;
     private ImageIcon icoBloc;
     private ImageIcon iconCoeur;
+    private ImageIcon iconPorte;
+    private ImageIcon iconbouton;
+    private ImageIcon iconPorteOpen;
+    private ImageIcon iconBlocSimple;
+    private ImageIcon iconPiege;
+    private ImageIcon iconPiegeActive;
 
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
 
-    public VueControleur(Jeu _jeu) {
+    public VueControleur(Jeu _jeu,Main m) {
         sizeX = jeu.SIZE_X;
         sizeY = _jeu.SIZE_Y;
         jeu = _jeu;
+        mn=m;
+        
 
         chargerLesIcones();
         placerLesComposantsGraphiques();
@@ -74,11 +87,17 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        icoHero = chargerIcone("Images/Pacman.png");
+        icoHero = chargerIcone("Images/paceman.png");
         icoVide = chargerIcone("Images/Vide.png");
         icoMur = chargerIcone("Images/Mur.png");
         icoBloc = chargerIcone("Images/Colonne.png");
-        iconCoeur=chargerIcone("Images/iconCoeur.png");
+        iconCoeur=chargerIcone("Images/viande.png");
+        iconPorte= chargerIcone("Images/porte.png");
+        iconbouton=chargerIcone("Images/button.png");
+        iconPorteOpen=chargerIcone("Images/porteOuverte.png");
+        iconBlocSimple=chargerIcone("Images/simple.png");
+        iconPiege=chargerIcone("Images/piege.png");
+        iconPiegeActive=chargerIcone("Images/piegeActive.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -135,7 +154,7 @@ public class VueControleur extends JFrame implements Observer {
                     if (e!= null) {
                         if (c.getEntite() instanceof Heros) {
                             tabJLabel[X][Y].setIcon(icoHero);
-                        } else if (c.getEntite() instanceof Bloc) {
+                        } else if (c.getEntite() instanceof BlocObjectif) {
                             tabJLabel[X][Y].setIcon(icoBloc);
                         }
                         /*si c'est l'ojectif on met l'icon de l'objectif*/
@@ -144,7 +163,16 @@ public class VueControleur extends JFrame implements Observer {
                         	tabJLabel[X][Y].setIcon(iconCoeur);
                         	
                         }
-                        
+                        else if(c.getEntite()
+                                instanceof Boutton){
+                        	tabJLabel[X][Y].setIcon(iconbouton);
+                        	
+                        }
+                        else if(c.getEntite()
+                                instanceof BlocSimple){
+                        	tabJLabel[X][Y].setIcon(iconBlocSimple);
+                        	
+                        }
                     } else {
                         if (jeu.getGrille()[X][Y] instanceof Mur) {
                             tabJLabel[X][Y].setIcon(icoMur);
@@ -154,6 +182,32 @@ public class VueControleur extends JFrame implements Observer {
                         else if (jeu.getGrille()[X][Y] instanceof Vide) {
 
                             tabJLabel[X][Y].setIcon(icoVide);
+                        }
+                        else if(jeu.getGrille()[X][Y] instanceof Porte) {
+                        	if(jeu.getGrille()[X][Y].getActive()==false) {
+                        	tabJLabel[X][Y].setIcon(iconPorte);}
+                        	else {
+                        		tabJLabel[X][Y].setIcon(iconPorteOpen);
+                        		
+                        	}}
+                        
+                        	 else if(jeu.getGrille()[X][Y] instanceof CaseGlasse) {
+                        		 tabJLabel[X][Y].setOpaque(true);
+                        		 tabJLabel[X][Y].setBackground(Color.BLUE);
+                        		 
+                        		 
+                        	 }
+                             
+                       
+                        
+                        else if (jeu.getGrille()[X][Y] instanceof Piege) {
+                        	if((jeu.getGrille()[X][Y].getActive())==false) {
+                        		tabJLabel[X][Y].setIcon(iconPiege);
+                        	}
+                        	else {
+                        		tabJLabel[X][Y].setIcon(iconPiegeActive);
+                        	}
+                        	
                         }
                        
                       
@@ -166,10 +220,111 @@ public class VueControleur extends JFrame implements Observer {
             }
         }
     }
+    
+    /* message associe à la fin de partie*/
+    private void finDePartie() {
+    	JPanel finPanel = new JPanel(new BorderLayout());
 
-    @Override
+		//On  Créer les labels pour les étapes et le score
+		JLabel etapesLabel = new JLabel("ETAPES : ");
+		JLabel scoreLabel = new JLabel("SCORE : ");
+
+		//On Crée les labels pour afficher les valeurs des étapes et du score
+		String etapesValue = String.valueOf(this.jeu.getEtapes());
+		String scoreValue = String.valueOf(this.jeu.getScore());
+		JLabel etapes = new JLabel(etapesValue);
+		JLabel score = new JLabel(scoreValue);
+
+		// On Ajoute les labels des étapes et du score à un JPanel pour les placer côte à côte
+		JPanel infoPanel = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+		infoPanel.add(etapesLabel);
+		infoPanel.add(etapes);
+		infoPanel.add(scoreLabel);
+		infoPanel.add(score);
+
+		// Ajouter le JPanel des informations au JPanel principal (endPanel)
+		finPanel.add(infoPanel, BorderLayout.NORTH);
+    	String[] lesOptions= {"Play Next Puzzle","Play Puzzle Again"};
+    	
+    	int result = JOptionPane.showOptionDialog(null, finPanel, "END LEVEL",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, lesOptions, lesOptions[0]);
+    	mn.change_De_Niveau(result);
+    	
+    
+    	
+    
+    	//JOptionPane.showMessageDialog(null, "Bravo Couz vous avez fini le niveau");
+    	
+    	
+    	}
+   
+    private void ouvertureDelaPorte() {
+    	for (int Y= 0; Y < sizeY; Y++) {
+            for (int X = 0; X < sizeX; X++) {
+
+                Case c = jeu.getGrille()[X][Y];
+                
+                
+
+                if (c != null) {
+
+                    
+
+                    
+                      
+                        if(jeu.getGrille()[X][Y] instanceof Porte) {
+                        	tabJLabel[X][Y].setIcon(iconPorteOpen);;
+                        	((Porte) jeu.getGrille()[X][Y]).changerDetat();
+                        	
+                        }
+                       
+                      
+                    }
+
+
+
+                }
+
+            }
+        }
+    	
+    
+ @Override
+    
+
+
+
+
+
     public void update(Observable o, Object arg) {
-        mettreAJourAffichage();
+    	if(arg==null) {
+    		System.out.println("entre update"+arg);
+    		 mettreAJourAffichage();
+    		
+    	}
+    	else if(arg instanceof String) {
+    		System.out.println("entre update"+(String) arg);
+        	if(((String) arg).equals("fin")) {
+        		System.out.println("j'appelle la fonction fin de partie");
+        		finDePartie();
+            	
+            }
+        	else if(((String) arg).equals("boutonAppuier")) {
+        		
+        		ouvertureDelaPorte();
+        	
+        		
+        	}
+    		
+    	}
+    	
+    	else {
+    		System.out.println("erreur"+arg.getClass());
+        	
+            	
+            
+        }}
+        
         /*
 
         // récupérer le processus graphique pour rafraichir
@@ -181,8 +336,8 @@ public class VueControleur extends JFrame implements Observer {
                     public void run() {
                         mettreAJourAffichage();
                     }
-                }); 
-        */
+                }); */
+        
 
     }
-}
+

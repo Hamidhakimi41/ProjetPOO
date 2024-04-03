@@ -1,10 +1,10 @@
 MMMMMMMMMMMMMMMMMMMM
 M                  M
 M  H               M
-M             B    M
-M                  M            
+M           s  B   M
+M              s   M            
 M    B         O   M             
 M                  M  
-M                  M
+M    O             M
 M                  M
 MMMMMMMMMMMMMMMMMMMM

@@ -7,4 +7,19 @@ public class Mur extends Case {
     public boolean peutEtreParcouru() {
         return false;
     }
+
+	@Override
+	public boolean getActive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void setActive() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
 }

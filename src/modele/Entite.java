@@ -36,4 +36,6 @@ public abstract class Entite extends Obj {
         return jeu.deplacerEntite(this, d);
     }
 
+	protected abstract boolean finDePartie(Jeu jeu);
+
 }

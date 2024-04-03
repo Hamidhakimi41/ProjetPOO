@@ -9,6 +9,20 @@ public class Vide extends Case {
         return e == null;
     }
 
+	@Override
+	public boolean getActive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void setActive() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 
 
 }

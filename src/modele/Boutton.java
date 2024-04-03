@@ -1,8 +1,10 @@
 package modele;
 
-public class Objectif extends Entite {
+import java.util.Observable;
 
-	public Objectif(Jeu _jeu, Case _c) {
+public class Boutton extends Entite  {
+
+	public Boutton(Jeu _jeu, Case _c) {
 		super(_jeu, _c);
 		// TODO Auto-generated constructor stub
 	}
@@ -12,5 +14,9 @@ public class Objectif extends Entite {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
+	
 
 }
