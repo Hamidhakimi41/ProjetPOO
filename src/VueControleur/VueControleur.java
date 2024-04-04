@@ -35,18 +35,24 @@ public class VueControleur extends JFrame implements Observer {
 	private Main mn;
 	// private int niveausuivant=0;
 
-	// icones affichées dans la grille
-	private ImageIcon icoHero;
-	private ImageIcon icoVide;
-	private ImageIcon icoMur;
-	private ImageIcon icoBloc;
-	private ImageIcon iconCoeur;
-	private ImageIcon iconPorte;
-	private ImageIcon iconbouton;
-	private ImageIcon iconPorteOpen;
-	private ImageIcon iconBlocSimple;
-	private ImageIcon iconPiege;
-	private ImageIcon iconPiegeActive;
+
+	
+
+    // icones affichées dans la grille
+    private ImageIcon icoHero;
+    private ImageIcon icoVide;
+    private ImageIcon icoMur;
+    private ImageIcon icoBloc;
+    private ImageIcon iconCoeur;
+    private ImageIcon iconPorte;
+    private ImageIcon iconbouton;
+    private ImageIcon iconPorteOpen;
+    private ImageIcon iconBlocSimple;
+    private ImageIcon iconPiege;
+    private ImageIcon iconPiegeActive;
+    private ImageIcon iconRailVertical;
+    private ImageIcon iconRailHorizontal;
+
 
 	private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée
 									// à une icône, suivant ce qui est présent dans le modèle)
@@ -91,20 +97,21 @@ public class VueControleur extends JFrame implements Observer {
 			}
 		});
 	}
-
-	private void chargerLesIcones() {
-		icoHero = chargerIcone("Images/paceman.png");
-		icoVide = chargerIcone("Images/Vide.png");
-		icoMur = chargerIcone("Images/Mur.png");
-		icoBloc = chargerIcone("Images/Colonne.png");
-		iconCoeur = chargerIcone("Images/viande.png");
-		iconPorte = chargerIcone("Images/porte.png");
-		iconbouton = chargerIcone("Images/button.png");
-		iconPorteOpen = chargerIcone("Images/porteOuverte.png");
-		iconBlocSimple = chargerIcone("Images/simple.png");
-		iconPiege = chargerIcone("Images/piege.png");
-		iconPiegeActive = chargerIcone("Images/piegeActive.png");
-	}
+	 private void chargerLesIcones() {
+	        icoHero = chargerIcone("Images/paceman.png");
+	        icoVide = chargerIcone("Images/Vide.png");
+	        icoMur = chargerIcone("Images/Mur.png");
+	        icoBloc = chargerIcone("Images/Colonne.png");
+	        iconCoeur=chargerIcone("Images/viande.png");
+	        iconPorte= chargerIcone("Images/porte.png");
+	        iconbouton=chargerIcone("Images/button.png");
+	        iconPorteOpen=chargerIcone("Images/porteOuverte.png");
+	        iconBlocSimple=chargerIcone("Images/simple.png");
+	        iconPiege=chargerIcone("Images/piege.png");
+	        iconPiegeActive=chargerIcone("Images/piegeActive.png");
+	        iconRailVertical = chargerIcone("Images/railVertical.png");
+	        iconRailHorizontal = chargerIcone("Images/railHorizontal.png");
+	    }
 
 	private ImageIcon chargerIcone(String urlIcone) {
 		BufferedImage image = null;
@@ -118,6 +125,8 @@ public class VueControleur extends JFrame implements Observer {
 
 		return new ImageIcon(image);
 	}
+	
+
 
 	private void placerLesComposantsGraphiques() {
 		setTitle("Sokoban");
@@ -127,6 +136,9 @@ public class VueControleur extends JFrame implements Observer {
 		JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases
 																				// graphiques et les positionner sous la
 																				// forme d'une grille
+
+   
+
 
 		tabJLabel = new JLabel[sizeX][sizeY];
 
@@ -160,22 +172,57 @@ public class VueControleur extends JFrame implements Observer {
 					if (e != null) {
 						if (c.getEntite() instanceof Heros) {
 							tabJLabel[X][Y].setIcon(icoHero);
-						} else if (c.getEntite() instanceof BlocObjectif) {
+						} 
+						else if (c.getEntite() instanceof BlocObjectif) {
 							tabJLabel[X][Y].setIcon(icoBloc);
 						}
 						/* si c'est l'ojectif on met l'icon de l'objectif */
 						else if (c.getEntite() instanceof Objectif) {
 							tabJLabel[X][Y].setIcon(iconCoeur);
 
-						} else if (c.getEntite() instanceof Boutton) {
+
+						} 
+						else if (c.getEntite() instanceof Boutton) {
 							tabJLabel[X][Y].setIcon(iconbouton);
 
-						} else if (c.getEntite() instanceof BlocSimple) {
+                            
+                        }
+						else if (c.getEntite() instanceof BlocSimple) {
 							tabJLabel[X][Y].setIcon(iconBlocSimple);
 
-						}
-					} else {
-						if (jeu.getGrille()[X][Y] instanceof Mur) {
+						}}
+					else {
+                        if(jeu.getGrille()[X][Y] instanceof Porte) {
+                        	if(jeu.getGrille()[X][Y].getActive()==false) {
+                        	tabJLabel[X][Y].setIcon(iconPorte);}
+                        	else {
+                        		tabJLabel[X][Y].setIcon(iconPorteOpen);
+                        		
+                        	}
+                           }
+                        else if(jeu.getGrille()[X][Y] instanceof CaseGlasse) {
+                        		 tabJLabel[X][Y].setOpaque(true);
+                        		 tabJLabel[X][Y].setBackground(Color.BLUE);
+                        		 
+                        		 
+                        }
+                             
+                        else if (jeu.getGrille()[X][Y] instanceof RailVertical){
+                                 tabJLabel[X][Y].setIcon(iconRailVertical);
+
+                        }
+                        else  if (jeu.getGrille()[X][Y] instanceof RailHorizontal){
+                            tabJLabel[X][Y].setIcon(iconRailHorizontal);
+                            	
+                         }
+                             
+                         }
+	
+
+						} 
+						else {
+					    
+						      if (jeu.getGrille()[X][Y] instanceof Mur) {
 							tabJLabel[X][Y].setIcon(icoMur);
 						}
 
@@ -207,12 +254,13 @@ public class VueControleur extends JFrame implements Observer {
 						}
 
 					}
+					}} 
 
 				}
 
-			}
-		}
-	}
+			
+		
+	
 
 	/* message associe à la fin de partie */
 	private void finDePartie() {

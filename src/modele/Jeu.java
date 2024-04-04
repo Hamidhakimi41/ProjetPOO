@@ -101,7 +101,12 @@ public class Jeu extends Observable {
 
 							addCase(new CaseGlasse(this), i, index);
 							break;
-
+						case 'h':
+							addCase(new RailHorizontal(this), i, index);
+							break;
+						case 'v':
+							addCase(new RailVertical(this), i, index);
+							break;
 						case 'M':
 
 							addCase(new Mur(this), i, index);
@@ -124,6 +129,7 @@ public class Jeu extends Observable {
 						case 'B':// bloc objectif
 							BlocObjectif b = new BlocObjectif(this, grilleEntites[i][index]);
 							break;
+
 
 						}
 					}
@@ -203,6 +209,7 @@ public class Jeu extends Observable {
 				}
 
 			}
+
 			// si l'c'est l'hero et le bouton
 			if (e instanceof Heros && eCible instanceof Boutton) {
 				// on chance l'etat de la porte et on notifie la vue
@@ -210,6 +217,25 @@ public class Jeu extends Observable {
 				notifyObservers("boutonAppuier");
 				System.out.println("notif envoyer");
 
+
+
+			// si l'c'est l'objectif et le bouton
+		if(e instanceof Heros && eCible instanceof Boutton) {
+			//on chance l'etat de la porte
+			setChanged();
+			notifyObservers("boutonAppuier");
+			System.out.println("notif envoyer");
+				
+
+			}
+			if(e instanceof Heros || e instanceof Bloc){
+				Case caseCourant = e.getCase();
+				if (caseCourant instanceof RailVertical && (d == Direction.gauche || d == Direction.droite)){
+					return false;
+				}
+				if (caseCourant instanceof RailHorizontal && (d == Direction.bas || d == Direction.haut)){
+					return false;
+				}
 			}
 
 			// si la case est libérée
@@ -233,6 +259,20 @@ public class Jeu extends Observable {
 				((CaseGlasse) caseALaPosition(pCible)).glisser(e, d);
 
 			}
+
+
+				
+				
+			   } 
+		if (e!=null && caseALaPosition(pCible) instanceof CaseGlasse) {
+			e.getCase().quitterLaCase();
+			((CaseGlasse) caseALaPosition(pCible)).glisser(e,d);
+			
+			
+		   }
+
+			
+			
 
 			else {
 				retour = false;

@@ -34,28 +34,53 @@ public class Main {
 	public Main() {
 		this(niveausuivant);
 
+		
+    	
+    	
+		
+	}
+	
+	public  Main(int lvl) {
+		String lvl1="Niveaux/niveau1.txt";
+		String lvl2="Niveaux/niveau2.txt";
+		String lvl3="Niveaux/niveau3.txt";
+		String lvl4="Niveaux/niveau4.txt";
+		String lvl5="Niveaux/niveau5.txt";
+    	
+    	
+    	niveaux = new ArrayList<>();
+    	//niveaux.add(lvl1);
+    	//niveaux.add(lvl2);
+    	//niveaux.add(lvl3);
+    	//niveaux.add(lvl4);
+		niveaux.add(lvl5);
+
+		if(lvl<niveaux.size()) {
+	
+		
+		
+				
+    	jeu = new Jeu(niveaux.get(lvl));
+    	vc = new VueControleur(jeu,this);
+    	vc.setVisible(true);
+    	jeu.addObserver(vc);	}
 	}
 
-	public Main(int lvl) {
-		String lvl1 = "Niveaux/niveau1.txt";
-		String lvl2 = "Niveaux/niveau2.txt";
-		String lvl3 = "Niveaux/niveau3.txt";
-		String lvl4 = "Niveaux/niveau4.txt";
+	
+	/*public static void lireSonMouvement() {
+		
+		
+			String chemin="Audios/bouge.mp3";
+			try {
+	            FileInputStream fileInputStream = new FileInputStream(chemin);
+	            Player player = new Player(fileInputStream);
+	            player.play();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	}*/
 
-		niveaux = new ArrayList<>();
-		niveaux.add(lvl1);
-		niveaux.add(lvl2);
-		niveaux.add(lvl3);
-		niveaux.add(lvl4);
-
-		if (lvl < niveaux.size()) {
-
-			jeu = new Jeu(niveaux.get(lvl));
-			vc = new VueControleur(jeu, this);
-			vc.setVisible(true);
-			jeu.addObserver(vc);
-		}
-	}
+	
 /* cette fonction parent en paramet une decision de l'utilisateur
  * 	afin de decider si on creer le meme niveau ou on passe au niveau suivant
  * ainsi 0 pour passer au niveau suivant 1 sinon*/
