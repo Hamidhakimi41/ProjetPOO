@@ -6,6 +6,7 @@
 package modele;
 
 import java.awt.Point;
+
 import java.util.HashMap;
 import java.util.Observable;
 import java.io.BufferedReader;
@@ -13,19 +14,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/*Cette est contient tout ce qui est necessaire au fonctionnement du jeu
+ * SIZE_X et SIZE_Y des constantes pour initiliaser la grille
+ * @param nombreObjetif qui permet de detecter la fin du jeu
+ * @ etapes et score pour calculer respectivemet le score et les etapes
+ * */
 public class Jeu extends Observable {
 
 	public static final int SIZE_X = 20;
 	public static final int SIZE_Y = 10;
-
-	// listes d'objectif
 	private int nombreObjectif = 0;
-	private int score=0;
-	private int etapes=0;
+	private int score = 0;
+	private int etapes = 0;
 	private Heros heros;
 
 	HashMap<Case, Point> map = new HashMap<Case, Point>(); // permet de récupérer la position d'une case à
-																	// partir de sa référence
+															// partir de sa référence
 	private Case[][] grilleEntites = new Case[SIZE_X][SIZE_Y]; // permet de récupérer une case à partir de ses
 																// coordonnées
 
@@ -46,6 +50,7 @@ public class Jeu extends Observable {
 		setChanged();
 		notifyObservers();
 	}
+
 	public int getNombreObjectif() {
 		return nombreObjectif;
 	}
@@ -85,24 +90,24 @@ public class Jeu extends Observable {
 						}
 
 						switch (lignePourPremierLecture.charAt(i)) {
-						case 'P'://la porte
+						case 'P':// la porte
 							addCase(new Porte(this), i, index);
 							break;
-						case 'b'://si c'est un bouton
-							Boutton b1=new Boutton(this,grilleEntites[i][index]);
-							
+						case 'b':// si c'est un bouton
+							Boutton b1 = new Boutton(this, grilleEntites[i][index]);
+
 							break;
 						case 'G':
-							
+
 							addCase(new CaseGlasse(this), i, index);
 							break;
 
 						case 'M':
-						
+
 							addCase(new Mur(this), i, index);
 							break;
-						case 'p'://le p de piege
-							
+						case 'p':// le p de piege
+
 							addCase(new Piege(this), i, index);
 							break;
 						case 'O':
@@ -113,10 +118,10 @@ public class Jeu extends Observable {
 						case 'H':
 							heros = new Heros(this, grilleEntites[i][index]);
 							break;
-						case 's'://blocsimple
+						case 's':// blocsimple
 							BlocSimple s = new BlocSimple(this, grilleEntites[i][index]);
 							break;
-						case 'B'://bloc objectif
+						case 'B':// bloc objectif
 							BlocObjectif b = new BlocObjectif(this, grilleEntites[i][index]);
 							break;
 
@@ -140,25 +145,8 @@ public class Jeu extends Observable {
 			System.err.println("Erreur de lecture : " + e.getMessage());
 		}
 
-		// murs extérieurs horizontaux
-		/*
-		 * for (int x = 0; x < 20; x++) { addCase(new Mur(this), x, 0); addCase(new
-		 * Mur(this), x, 9); }
-		 * 
-		 * // murs extérieurs verticaux for (int y = 1; y < 9; y++) { addCase(new
-		 * Mur(this), 0, y); addCase(new Mur(this), 19, y); }
-		 * 
-		 * for (int x = 1; x < 19; x++) { for (int y = 1; y < 9; y++) {
-		 * 
-		 * addCase(new Vide(this), x, y); }
-		 * 
-		 * }
-		 * 
-		 * heros = new Heros(this, grilleEntites[4][4]); Bloc b = new Bloc(this,
-		 * grilleEntites[6][6]); Objectif o=new Objectif(this, grilleEntites[7][7]);
-		 */
-
 	}
+
 	public int getScore() {
 		return score;
 	}
@@ -166,6 +154,7 @@ public class Jeu extends Observable {
 	public int getEtapes() {
 		return etapes;
 	}
+
 	private void addCase(Case e, int x, int y) {
 		grilleEntites[x][y] = e;
 		map.put(e, new Point(x, y));
@@ -185,70 +174,71 @@ public class Jeu extends Observable {
 		if (contenuDansGrille(pCible)) {
 			Entite eCible = caseALaPosition(pCible).getEntite();
 			/* si c'est pas null et n'est pas l'objectif */
-			
+
 			if (eCible != null && !(eCible instanceof Objectif)) {
 				eCible.pousser(d);
 			}
 			/* entite cible est l'objectif */
 			if (eCible instanceof Objectif && e instanceof BlocObjectif) {
-				/*si on atteint l'object le score du niveau augmente de 50*/
-				score+=50;
-				System.out.println("le nb object avant"+nombreObjectif);
+				/*
+				 * si on atteint l'object le score du niveau augmente de 50 et on notifie la vu
+				 * pour le son
+				 */
+				setChanged();
+				notifyObservers("bonus");
+				score += 50 + (score * 50 / 100);
+				System.out.println("le nb object avant" + nombreObjectif);
 				this.nombreObjectif--;
 				e.getCase().quitterLaCase();
 				caseALaPosition(pCible).entrerSurLaCase(e);
-				//caseALaPosition(pCible);				
-				if(e.finDePartie(this)) {
-				
+				/*
+				 * si c'est la fin de partie on notify la vu
+				 * 
+				 */
+				if (e.finDePartie(this)) {
+
 					setChanged();
 					notifyObservers("fin");
-				
-					
-					
+
 				}
-				
-				//si c'est la fin de partie on notify la vu
-				
-				
-				
 
 			}
-			// si l'c'est l'objectif et le bouton
-		if(e instanceof Heros && eCible instanceof Boutton) {
-			//on chance l'etat de la porte
-			setChanged();
-			notifyObservers("boutonAppuier");
-			System.out.println("notif envoyer");
-				
+			// si l'c'est l'hero et le bouton
+			if (e instanceof Heros && eCible instanceof Boutton) {
+				// on chance l'etat de la porte et on notifie la vue
+				setChanged();
+				notifyObservers("boutonAppuier");
+				System.out.println("notif envoyer");
+
 			}
 
 			// si la case est libérée
-		if (caseALaPosition(pCible).peutEtreParcouru()) {
-				/*quand l'hero bouge on augment les etapes*/
+			if (caseALaPosition(pCible).peutEtreParcouru()) {
+				/* quand l'hero bouge on augment les etapes et la notif pour le son */
+				setChanged();
+				notifyObservers("bouge");
 				etapes++;
 				e.getCase().quitterLaCase();
 				caseALaPosition(pCible).entrerSurLaCase(e);
 
-		}
-		/*si c'est le piege*/
-		if (e!=null && caseALaPosition(pCible) instanceof Piege) {
+			}
+			/* si c'est le piege */
+			if (e != null && caseALaPosition(pCible) instanceof Piege) {
 				caseALaPosition(pCible).entrerSurLaCase(e);
-				
-				
-			   } 
-		if (e!=null && caseALaPosition(pCible) instanceof CaseGlasse) {
-			((CaseGlasse) caseALaPosition(pCible)).glisser(e,d);
-			
-			
-		   } 
-			
-			
+				setChanged();
+				notifyObservers("piege");// on notifie pour le son
+
+			}
+			if (e != null && caseALaPosition(pCible) instanceof CaseGlasse) {
+				((CaseGlasse) caseALaPosition(pCible)).glisser(e, d);
+
+			}
+
 			else {
 				retour = false;
 			}
 
-		} 
-		else {
+		} else {
 			retour = false;
 		}
 
@@ -280,7 +270,7 @@ public class Jeu extends Observable {
 	/**
 	 * Indique si p est contenu dans la grille
 	 */
-public	boolean contenuDansGrille(Point p) {
+	public boolean contenuDansGrille(Point p) {
 		return p.x >= 0 && p.x < SIZE_X && p.y >= 0 && p.y < SIZE_Y;
 	}
 
