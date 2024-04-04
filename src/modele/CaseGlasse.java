@@ -10,11 +10,9 @@ public class CaseGlasse extends Case {
         Point pCourant = jeu.map.get(e.getCase());
         Point pCible = jeu.calculerPointCible(pCourant, d);
 
-
         while (jeu.contenuDansGrille(pCible)){
         	
             Case caseSuivante = jeu.caseALaPosition(pCible);
-            		//getPos(pCible.x,pCible.y);
             if (caseSuivante != null && caseSuivante.peutEtreParcouru()){
                 if (caseSuivante instanceof CaseGlasse){
                     pCourant = pCible;
@@ -29,7 +27,6 @@ public class CaseGlasse extends Case {
         if (jeu.contenuDansGrille(pCible)){
             Case caseSuivante = jeu.caseALaPosition(pCible);
             if (caseSuivante != null && caseSuivante.peutEtreParcouru()){
-                e.getCase().quitterLaCase();
                 caseSuivante.entrerSurLaCase(e);
                 return true;
             }

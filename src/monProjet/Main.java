@@ -33,14 +33,16 @@ public class Main {
 		String lvl2="Niveaux/niveau2.txt";
 		String lvl3="Niveaux/niveau3.txt";
 		String lvl4="Niveaux/niveau4.txt";
+		String lvl5="Niveaux/niveau5.txt";
     	
     	
     	niveaux = new ArrayList<>();
     	//niveaux.add(lvl1);
     	//niveaux.add(lvl2);
     	//niveaux.add(lvl3);
-    	niveaux.add(lvl4);
-    	
+    	//niveaux.add(lvl4);
+		niveaux.add(lvl5);
+
 		if(lvl<niveaux.size()) {
 	
 		

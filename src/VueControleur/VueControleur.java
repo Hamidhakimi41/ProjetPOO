@@ -46,6 +46,8 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon iconBlocSimple;
     private ImageIcon iconPiege;
     private ImageIcon iconPiegeActive;
+    private ImageIcon iconRailVertical;
+    private ImageIcon iconRailHorizontal;
 
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
@@ -98,6 +100,8 @@ public class VueControleur extends JFrame implements Observer {
         iconBlocSimple=chargerIcone("Images/simple.png");
         iconPiege=chargerIcone("Images/piege.png");
         iconPiegeActive=chargerIcone("Images/piegeActive.png");
+        iconRailVertical = chargerIcone("Images/railVertical.png");
+        iconRailHorizontal = chargerIcone("Images/railHorizontal.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -189,14 +193,21 @@ public class VueControleur extends JFrame implements Observer {
                         	else {
                         		tabJLabel[X][Y].setIcon(iconPorteOpen);
                         		
-                        	}}
-                        
-                        	 else if(jeu.getGrille()[X][Y] instanceof CaseGlasse) {
+                        	}
+                        } else if(jeu.getGrille()[X][Y] instanceof CaseGlasse) {
                         		 tabJLabel[X][Y].setOpaque(true);
                         		 tabJLabel[X][Y].setBackground(Color.BLUE);
                         		 
                         		 
-                        	 }
+                        }
+                             else if (jeu.getGrille()[X][Y] instanceof RailVertical){
+                                 tabJLabel[X][Y].setIcon(iconRailVertical);
+
+                        }
+                             else  if (jeu.getGrille()[X][Y] instanceof RailHorizontal){
+                            tabJLabel[X][Y].setIcon(iconRailHorizontal);
+
+                        }
                              
                        
                         
