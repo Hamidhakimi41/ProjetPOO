@@ -111,6 +111,10 @@ public class Jeu extends Observable {
 
 							addCase(new Mur(this), i, index);
 							break;
+						case 'R':
+
+							addCase(new Replay(this), i, index);
+							break;
 						case 'p':// le p de piege
 
 							addCase(new Piege(this), i, index);
@@ -216,6 +220,10 @@ public class Jeu extends Observable {
 				setChanged();
 				notifyObservers("boutonAppuier");
 				System.out.println("notif envoyer");}
+			if(e instanceof Heros && caseALaPosition(pCible) instanceof Replay) {
+				setChanged();
+				notifyObservers("replay");
+			}
 
 
 

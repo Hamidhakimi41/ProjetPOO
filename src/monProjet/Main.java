@@ -50,10 +50,10 @@ public class Main {
     	
     	
     	niveaux = new ArrayList<>();
-    	/*niveaux.add(lvl1);
+    	niveaux.add(lvl1);
     	niveaux.add(lvl2);
     	niveaux.add(lvl3);
-    	niveaux.add(lvl4);*/
+    	niveaux.add(lvl4);
 		niveaux.add(lvl5);
 		niveaux.add(end);
 
@@ -120,8 +120,16 @@ public class Main {
 			clip.start();
 		} catch (Exception e) {
 			System.out.println("Error playing sound: " + e.getMessage());
+			
 		}
 
+	}
+	public void rejouer() {
+		int i=this.niveausuivant;
+		this.vc.setVisible(false);
+		Main mn = new Main(i);
+		
+		
 	}
 
 	public static void main(String[] args) {
@@ -129,4 +137,6 @@ public class Main {
 		Main mn = new Main();
 
 	}
+
+	
 }

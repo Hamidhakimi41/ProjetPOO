@@ -52,6 +52,7 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon iconPiegeActive;
     private ImageIcon iconRailVertical;
     private ImageIcon iconRailHorizontal;
+    private ImageIcon replay;
 
 
 	private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée
@@ -111,6 +112,7 @@ public class VueControleur extends JFrame implements Observer {
 	        iconPiegeActive=chargerIcone("Images/piegeActive.png");
 	        iconRailVertical = chargerIcone("Images/railVertical.png");
 	        iconRailHorizontal = chargerIcone("Images/railHorizontal.png");
+	        replay=chargerIcone("Images/replay.png");
 	    }
 
 	private ImageIcon chargerIcone(String urlIcone) {
@@ -203,6 +205,12 @@ public class VueControleur extends JFrame implements Observer {
                         		 
                         		 
                         }
+                        else if(c instanceof Replay) {
+                        	tabJLabel[X][Y].setIcon(replay);
+                   		
+                   		 
+                   		 
+                   }
                              
                         else if (c instanceof RailVertical){
                                  tabJLabel[X][Y].setIcon(iconRailVertical);
@@ -347,6 +355,9 @@ public class VueControleur extends JFrame implements Observer {
 				break;
 			case "bonus":
 				mn.lireSonMouvement("Audios/bonus.WAV");
+				break;
+			case "replay":
+				mn.rejouer();
 				break;
 
 			}
