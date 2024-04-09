@@ -132,12 +132,9 @@ public class VueControleur extends JFrame implements Observer {
 		setTitle("Sokoban");
 		setSize(400, 250);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
-		/* je modifier ici le x et y */
-		JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases
-																				// graphiques et les positionner sous la
-																				// forme d'une grille
-
-   
+		
+		JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX));
+        
 
 
 		tabJLabel = new JLabel[sizeX][sizeY];
@@ -191,46 +188,44 @@ public class VueControleur extends JFrame implements Observer {
 							tabJLabel[X][Y].setIcon(iconBlocSimple);
 
 						}}
-					else {
-                        if(jeu.getGrille()[X][Y] instanceof Porte) {
-                        	if(jeu.getGrille()[X][Y].getActive()==false) {
+					else {//jeu.getGrille()[X][Y]
+                        if(c instanceof Porte) {
+                        	if(c.getActive()==false) {
                         	tabJLabel[X][Y].setIcon(iconPorte);}
                         	else {
                         		tabJLabel[X][Y].setIcon(iconPorteOpen);
                         		
                         	}
                            }
-                        else if(jeu.getGrille()[X][Y] instanceof CaseGlasse) {
+                        else if(c instanceof CaseGlasse) {
                         		 tabJLabel[X][Y].setOpaque(true);
                         		 tabJLabel[X][Y].setBackground(Color.BLUE);
                         		 
                         		 
                         }
                              
-                        else if (jeu.getGrille()[X][Y] instanceof RailVertical){
+                        else if (c instanceof RailVertical){
                                  tabJLabel[X][Y].setIcon(iconRailVertical);
 
                         }
-                        else  if (jeu.getGrille()[X][Y] instanceof RailHorizontal){
+                        else  if (c instanceof RailHorizontal){
                             tabJLabel[X][Y].setIcon(iconRailHorizontal);
                             	
                          }
                              
-                         }
+                         
 	
 
-						} 
-						else {
-					    
-						      if (jeu.getGrille()[X][Y] instanceof Mur) {
+						
+						else if (c instanceof Mur) {
 							tabJLabel[X][Y].setIcon(icoMur);
 						}
 
-						else if (jeu.getGrille()[X][Y] instanceof Vide) {
+						else if (c instanceof Vide) {
 
 							tabJLabel[X][Y].setIcon(icoVide);
-						} else if (jeu.getGrille()[X][Y] instanceof Porte) {
-							if (jeu.getGrille()[X][Y].getActive() == false) {
+						} else if (c instanceof Porte) {
+							if (c.getActive() == false) {
 								tabJLabel[X][Y].setIcon(iconPorte);
 							} else {
 								tabJLabel[X][Y].setIcon(iconPorteOpen);
@@ -238,14 +233,14 @@ public class VueControleur extends JFrame implements Observer {
 							}
 						}
 
-						else if (jeu.getGrille()[X][Y] instanceof CaseGlasse) {
+						else if (c instanceof CaseGlasse) {
 							tabJLabel[X][Y].setOpaque(true);
 							tabJLabel[X][Y].setBackground(Color.BLUE);
 
-						}
+						   } 
 
-						else if (jeu.getGrille()[X][Y] instanceof Piege) {
-							if ((jeu.getGrille()[X][Y].getActive()) == false) {
+						else if (c instanceof Piege) {
+							if ((c.getActive()) == false) {
 								tabJLabel[X][Y].setIcon(iconPiege);
 							} else {
 								tabJLabel[X][Y].setIcon(iconPiegeActive);
@@ -254,7 +249,9 @@ public class VueControleur extends JFrame implements Observer {
 						}
 
 					}
-					}} 
+					}
+			}}
+					 
 
 				}
 
@@ -304,10 +301,13 @@ public class VueControleur extends JFrame implements Observer {
 
 				if (c != null) {
 
-					if (jeu.getGrille()[X][Y] instanceof Porte) {
-						tabJLabel[X][Y].setIcon(iconPorteOpen);
-						;
-						((Porte) jeu.getGrille()[X][Y]).changerDetat();
+					if (c instanceof Porte) {
+						
+						System.out.println("Porte ouverte avant"+c.getActive());
+						
+						 c.setActive();
+						
+						 System.out.println("Porte ouverte apres"+c.getActive());
 
 					}
 
@@ -337,7 +337,7 @@ public class VueControleur extends JFrame implements Observer {
 				break;
 
 			case "boutonAppuier":
-				ouvertureDelaPorte();
+				this.ouvertureDelaPorte();
 				break;
 			case "piege":
 				mn.lireSonMouvement("Audios/piege.WAV");

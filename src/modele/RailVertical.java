@@ -21,7 +21,9 @@ public class RailVertical extends Case{
     }
 
     @Override
-    protected void setActive() {
+	public void setActive() {
 
     }
+	
+	
 }

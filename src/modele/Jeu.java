@@ -123,7 +123,7 @@ public class Jeu extends Observable {
 						case 'H':
 							heros = new Heros(this, grilleEntites[i][index]);
 							break;
-						case 's':// blocsimple
+						case 's':/* blocsimple*/
 							BlocSimple s = new BlocSimple(this, grilleEntites[i][index]);
 							break;
 						case 'B':// bloc objectif
@@ -215,19 +215,11 @@ public class Jeu extends Observable {
 				// on chance l'etat de la porte et on notifie la vue
 				setChanged();
 				notifyObservers("boutonAppuier");
-				System.out.println("notif envoyer");
+				System.out.println("notif envoyer");}
 
 
 
-			// si l'c'est l'objectif et le bouton
-		if(e instanceof Heros && eCible instanceof Boutton) {
-			//on chance l'etat de la porte
-			setChanged();
-			notifyObservers("boutonAppuier");
-			System.out.println("notif envoyer");
-				
-
-			}
+			
 			if(e instanceof Heros || e instanceof Bloc){
 				Case caseCourant = e.getCase();
 				if (caseCourant instanceof RailVertical && (d == Direction.gauche || d == Direction.droite)){
@@ -236,6 +228,7 @@ public class Jeu extends Observable {
 				if (caseCourant instanceof RailHorizontal && (d == Direction.bas || d == Direction.haut)){
 					return false;
 				}
+		         
 			}
 
 			// si la case est libérée
@@ -255,33 +248,26 @@ public class Jeu extends Observable {
 				notifyObservers("piege");// on notifie pour le son
 
 			}
-			if (e != null && caseALaPosition(pCible) instanceof CaseGlasse) {
-				((CaseGlasse) caseALaPosition(pCible)).glisser(e, d);
-
-			}
-
-
-				
-				
-			   } 
-		if (e!=null && caseALaPosition(pCible) instanceof CaseGlasse) {
-			e.getCase().quitterLaCase();
-			((CaseGlasse) caseALaPosition(pCible)).glisser(e,d);
+			
+           /*on peut glisser si ya rien apres le glasse sinon il se comporte une case normal*/
+           if (e!=null && caseALaPosition(pCible) instanceof CaseGlasse) {
+        	
+        	   if(e instanceof Heros) {
+			   e.getCase().quitterLaCase();
+			   caseALaPosition(pCible).glisser(e,d);}
+        	   else {
+        		   e.pousser(d);
+        	   }
 			
 			
 		   }
-
-			
-			
-
-			else {
-				retour = false;
-			}
-
-		} else {
-			retour = false;
 		}
 
+			
+			else {
+			retour = false;
+		}
+        
 		return retour;
 	}
 

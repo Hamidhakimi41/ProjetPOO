@@ -16,10 +16,13 @@ public class Vide extends Case {
 	}
 
 	@Override
-	protected void setActive() {
+	public void setActive() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+
 
 	
 

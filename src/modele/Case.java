@@ -46,10 +46,16 @@ public abstract class Case extends Obj {
 	public abstract boolean getActive();
 
 
-	protected abstract void setActive();
+	public abstract void setActive();
 
 
 	protected  void setType(Case vide) {};
+	public boolean glisser(Entite e, Direction d) {
+		return false;
+	}
+
+
+
 
 
    }

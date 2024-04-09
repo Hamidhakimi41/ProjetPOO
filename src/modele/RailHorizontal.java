@@ -21,7 +21,8 @@ public class RailHorizontal extends Case{
     }
 
     @Override
-    protected void setActive() {
+	public void setActive() {
 
     }
+
 }

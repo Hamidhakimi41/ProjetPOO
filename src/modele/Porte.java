@@ -37,8 +37,9 @@ public class Porte extends Case {
 
 
 	@Override
-	protected void setActive() {
+	public void setActive() {
 		// TODO Auto-generated method stub
+		etat=!etat;
 		
 	}
 
